@@ -3,6 +3,15 @@
 version = 4
 
 [[package]]
+name = "LightsUI"
+version = "0.1.0"
+dependencies = [
+ "serde",
+ "tokio",
+ "topcoat",
+]
+
+[[package]]
 name = "adler2"
 version = "2.0.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -835,15 +844,6 @@ name = "libc"
 version = "0.2.190"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "ce5d3ddc6d3fa000eb1536d85e147bfe31aacaba692ed6a876f95cb7c855be78"
-
-[[package]]
-name = "lightsUI"
-version = "0.1.0"
-dependencies = [
- "serde",
- "tokio",
- "topcoat",
-]
 
 [[package]]
 name = "litemap"
