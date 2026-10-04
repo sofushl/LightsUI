@@ -1,9 +1,22 @@
-mod app;
 mod components;
+mod layout;
+mod pages;
+mod routes;
+mod triangle;
 
-use app::App;
-use leptos::prelude::*;
+use topcoat::{
+    asset::{AssetBundle, RouterBuilderAssetExt},
+    router::{Router, RouterBuilderDiscoverExt},
+};
 
-fn main() {
-    mount_to_body(App);
+#[tokio::main]
+async fn main() {
+    topcoat::start(
+        Router::builder()
+            .discover()
+            .assets(AssetBundle::load().expect("Asset load failed"))
+            .build(),
+    )
+    .await
+    .unwrap();
 }
