@@ -11,6 +11,8 @@ use topcoat::{
 #[page("/")]
 pub async fn home(cx: &Cx) -> Result<impl View> {
     let mode = signal(cx, || String::from("CHASE"));
+    let brightness = signal(cx, || String::from("255"));
+    let speed = signal(cx, || String::from("100"));
     let red = signal(cx, || String::from("255"));
     let green = signal(cx, || String::from("0"));
     let blue = signal(cx, || String::from("0"));
@@ -19,11 +21,20 @@ pub async fn home(cx: &Cx) -> Result<impl View> {
         <h1 class="text-xl font-bold pb-10 underline">"Triangles"</h1>
 
         string_input(display: "MODE", value: &mode)
-
+        number_input(display: "BRIGHTNESS", value: &brightness)
+        number_input(display: "SPEED", value: &speed)
         number_input(display: "RED", value: &red)
         number_input(display: "GREEN", value: &green)
         number_input(display: "BLUE", value: &blue)
 
-        submit_button(display: "Submit", mode: &mode, r: &red, g: &green, b: &blue)
+        submit_button(
+            display: "Submit",
+            mode: &mode,
+            brightness: &brightness,
+            speed: &speed,
+            r: &red,
+            g: &green,
+            b: &blue
+        )
     })
 }

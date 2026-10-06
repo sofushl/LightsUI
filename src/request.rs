@@ -3,12 +3,16 @@ use topcoat::{Result, runtime::procedure};
 
 pub async fn post_state(
     mode: &str,
+    brightness: &str,
+    speed: &str,
     r: &str,
     g: &str,
     b: &str,
 ) -> std::result::Result<String, String> {
     let body = serde_json::json!({
         "mode": mode,
+        "brightness": brightness,
+        "speed": speed,
         "r": r,
         "g": g,
         "b": b,
@@ -32,11 +36,12 @@ pub async fn post_state(
 #[procedure]
 pub async fn submit_state(
     mode: String,
+    brightness: String,
+    speed: String,
     r: String,
     g: String,
     b: String,
 ) -> Result<std::result::Result<String, String>> {
     println!("{}", mode);
-    // Validate here (e.g. allowlist of modes/colours): anyone can POST to this endpoint.
-    Ok(post_state(&mode, &r, &g, &b).await)
+    Ok(post_state(&mode, &brightness, &speed, &r, &g, &b).await)
 }

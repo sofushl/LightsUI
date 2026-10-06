@@ -37,6 +37,8 @@ pub async fn string_input(display: &str, value: &Signal<String>) -> Result<impl 
 pub async fn submit_button(
     display: &str,
     mode: &Signal<String>,
+    brightness: &Signal<String>,
+    speed: &Signal<String>,
     r: &Signal<String>,
     g: &Signal<String>,
     b: &Signal<String>,
@@ -46,7 +48,14 @@ pub async fn submit_button(
             <button
                 class="px-4 py-3 rounded-lg bg-blue-100"
                 @click=$(async |_e| {
-                    let _result = submit_state(mode.get(), r.get(), g.get(), b.get()).await;
+                    let _result = submit_state(
+                        mode.get(),
+                        brightness.get(),
+                        speed.get(),
+                        r.get(),
+                        g.get(),
+                        b.get(),
+                    ).await;
                 })
             >
                 (display)
