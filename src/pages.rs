@@ -1,49 +1,29 @@
-use crate::components::display_t;
-use crate::triangle;
+use crate::components::{number_input, string_input, submit_button};
 
 use topcoat::{
     Result,
     context::Cx,
-    router::{error::RouterErrorExt, page, path_param},
+    router::page,
+    runtime::signal,
     view::{View, view},
 };
 
 #[page("/")]
-pub async fn home() -> Result<impl View> {
-    let triangles = triangle::all();
+pub async fn home(cx: &Cx) -> Result<impl View> {
+    let mode = signal(cx, || String::from("CHASE"));
+    let red = signal(cx, || String::from("255"));
+    let green = signal(cx, || String::from("0"));
+    let blue = signal(cx, || String::from("0"));
 
     Ok(view! {
-        <h1>"Triangles"</h1>
-        for t in triangles {
-            display_t(
-                id: &t.id,
-                level: &t.level,
-                colour: t.colour.as_str(),
-                mode: t.mode.as_str()
-            )
-        }
-    })
-}
+        <h1 class="text-xl font-bold pb-10 underline">"Triangles"</h1>
 
-#[page("/triangles")]
-pub async fn about() -> Result<impl View> {
-    Ok(view! { <h1>"Triangles overview"</h1> })
-}
+        string_input(display: "MODE", value: &mode)
 
-path_param!(triangle_id: u8, error=not_found);
-#[page("/triangles/{triangle_id}")]
-pub async fn triabgle_detail(cx: &Cx) -> Result<impl View> {
-    let id: &u8 = path_param::<TriangleId>(cx)?;
-    let t = triangle::find(*id).ok_or_not_found()?;
+        number_input(display: "RED", value: &red)
+        number_input(display: "GREEN", value: &green)
+        number_input(display: "BLUE", value: &blue)
 
-    Ok(view! {
-        <div>
-            display_t(
-                id: id,
-                level: &t.level,
-                colour: t.colour.as_str(),
-                mode: t.mode.as_str()
-            )
-        </div>
+        submit_button(display: "Submit", mode: &mode, r: &red, g: &green, b: &blue)
     })
 }
