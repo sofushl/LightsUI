@@ -18,7 +18,8 @@ async fn main() {
     dotenv().ok();
 
     let conf = config::Config::load();
-    println!("{}", conf.ip);
+    println!("{}", conf.picoip);
+    println!("{}", conf.hostip);
     println!("{}", conf.port);
 
     let router = Router::builder()
@@ -26,7 +27,7 @@ async fn main() {
         .assets(AssetBundle::load().expect("Asset load failed"))
         .runtime()
         .build();
-    let listener = TcpListener::bind(format!("0.0.0.0:{}", conf.port))
+    let listener = TcpListener::bind(format!("{}:{}", conf.hostip, conf.port))
         .await
         .unwrap();
 

@@ -2,7 +2,8 @@ use dotenvy::dotenv;
 use std::env;
 
 pub struct Config {
-    pub ip: String,
+    pub picoip: String,
+    pub hostip: String,
     pub port: String,
 }
 
@@ -11,7 +12,8 @@ impl Config {
         dotenv().ok();
 
         Self {
-            ip: env::var("IP").expect("Missing IP"),
+            picoip: env::var("PICOIP").expect("Missing PICOIP"),
+            hostip: env::var("HOSTIP").expect("Missing HOSTIP"),
             port: env::var("PORT").expect("Missing PORT"),
         }
     }
