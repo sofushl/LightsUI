@@ -20,7 +20,7 @@ pub async fn post_state(
 
     let config = Config::load();
     let response = reqwest::Client::new()
-        .post(config.ip)
+        .post(config.picoip)
         .json(&body)
         .send()
         .await
