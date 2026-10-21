@@ -37,7 +37,7 @@ pub async fn root_layout(slot: Slot<'_>) -> Result<impl View> {
                         "LightsUI"
                     </a>
                 </nav>
-                <main class="max-w-2xl mx-auto px-6 py-10">(slot)</main>
+                <main class="max-w-2xl mx-auto py-10">(slot)</main>
             </body>
         </html>
     })

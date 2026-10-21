@@ -1,47 +1,27 @@
-use crate::config::Config;
+use crate::{
+    config::Config,
+    state::{LedCommand, LedState},
+};
 use topcoat::{Result, runtime::procedure};
 
-pub async fn post_state(
-    mode: &str,
-    brightness: &str,
-    speed: &str,
-    r: &str,
-    g: &str,
-    b: &str,
-) -> std::result::Result<String, String> {
-    let body = serde_json::json!({
-        "mode": mode,
-        "brightness": brightness,
-        "speed": speed,
-        "r": r,
-        "g": g,
-        "b": b,
-    });
+#[procedure]
+pub async fn submit_state(state: LedState) -> Result<String> {
+    let Ok(command) = LedCommand::try_from(state) else {
+        return Ok("Invalid value".into());
+    };
+
+    println!("{command:?}");
 
     let config = Config::load();
-    let response = reqwest::Client::new()
+    let sent = reqwest::Client::new()
         .post(config.picoip)
-        .json(&body)
+        .json(&command)
         .send()
         .await
-        .map_err(|e| format!("Failed to submit update: {e}"))?;
+        .and_then(|r| r.error_for_status());
 
-    if !response.status().is_success() {
-        return Err("Failed to submit update".to_string());
-    }
-
-    Ok("ok".to_string())
-}
-
-#[procedure]
-pub async fn submit_state(
-    mode: String,
-    brightness: String,
-    speed: String,
-    r: String,
-    g: String,
-    b: String,
-) -> Result<std::result::Result<String, String>> {
-    println!("{}", mode);
-    Ok(post_state(&mode, &brightness, &speed, &r, &g, &b).await)
+    Ok(match sent {
+        Ok(_) => "ok".into(),
+        Err(e) => format!("Failed to submit update: {e}"),
+    })
 }

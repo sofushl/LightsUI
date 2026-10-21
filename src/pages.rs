@@ -18,23 +18,30 @@ pub async fn home(cx: &Cx) -> Result<impl View> {
     let blue = signal(cx, || String::from("0"));
 
     Ok(view! {
-        <h1 class="text-xl font-bold pb-10 underline">"Triangles"</h1>
+        <div class="flex flex-col gap-10">
+            <div class="shadow-lg rounded-lg p-10 bg-amber-50">
+                <h1 class="text-xl font-bold pb-10 underline">"Triangles"</h1>
 
-        string_input(display: "MODE", value: &mode)
-        number_input(display: "BRIGHTNESS", value: &brightness)
-        number_input(display: "SPEED", value: &speed)
-        number_input(display: "RED", value: &red)
-        number_input(display: "GREEN", value: &green)
-        number_input(display: "BLUE", value: &blue)
+                string_input(display: "MODE", value: &mode)
+                number_input(display: "BRIGHTNESS", value: &brightness)
+                number_input(display: "SPEED", value: &speed)
 
-        submit_button(
-            display: "Submit",
-            mode: &mode,
-            brightness: &brightness,
-            speed: &speed,
-            r: &red,
-            g: &green,
-            b: &blue
-        )
+                number_input(display: "RED", value: &red)
+                number_input(display: "GREEN", value: &green)
+                number_input(display: "BLUE", value: &blue)
+            </div>
+
+            <div>
+                submit_button(
+                    display: "Submit",
+                    mode: &mode,
+                    brightness: &brightness,
+                    speed: &speed,
+                    r: &red,
+                    g: &green,
+                    b: &blue
+                )
+            </div>
+        </div>
     })
 }
